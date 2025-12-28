@@ -17,7 +17,7 @@ export default function MyEvents() {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/events", {
+      const res = await api.get("/api/events", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEvents(res.data.filter((e) => e.joined));
@@ -35,7 +35,7 @@ export default function MyEvents() {
   const handleLeave = async (eventId) => {
     try {
       setActionLoading((p) => ({ ...p, [eventId]: true }));
-      await api.post(`/rsvp/${eventId}/leave`, {}, {
+      await api.post(`/api/rsvp/${eventId}/leave`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -68,7 +68,7 @@ export default function MyEvents() {
         <h2 className="event-page-title">My Events</h2>
         {events.length === 0 ? (
           <div className="dashboard-empty">
-            <p>You haven`t joined any events yet.</p>
+            <p>You haven't joined any events yet.</p>
             <button className="btn-success" onClick={() => navigate("/dashboard")}>
               Browse Events
             </button>

@@ -80,10 +80,9 @@ export default function Signup() {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         password: form.password,
-        role: role, // Automatically assign role based on email domain
+        role: role,
       });
       
-      alert(`Account created successfully as ${role}! Please login.`);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
