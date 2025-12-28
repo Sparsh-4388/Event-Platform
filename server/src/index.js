@@ -12,10 +12,11 @@ const app = express();
 
 app.use(cors({
   origin: [
-    "event-platform-kappa-tan.vercel.app"
+    "https://event-platform-kappa-tan.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
 app.use(express.json());
 
