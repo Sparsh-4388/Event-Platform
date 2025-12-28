@@ -76,7 +76,7 @@ export default function Signup() {
     try {
       const role = determineRole(form.email);
       
-      await api.post("/auth/signup", {
+      await api.post("/api/auth/signup", {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         password: form.password,
