@@ -17,7 +17,7 @@ export default function Dashboard() {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/events", {
+      const res = await api.get("/api/events", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEvents(res.data);
@@ -42,7 +42,7 @@ export default function Dashboard() {
   const handleJoin = async (eventId) => {
     try {
       setActionLoading((p) => ({ ...p, [eventId]: true }));
-      await api.post(`/rsvp/${eventId}/join`, {}, { headers: { Authorization: `Bearer ${token}` } });
+      await api.post(`/api/rsvp/${eventId}/join`, {}, { headers: { Authorization: `Bearer ${token}` } });
       setEventStatus((p) => ({ ...p, [eventId]: { type: "success", text: "Joined ✓" } }));
       await fetchEvents();
     } catch {
@@ -56,7 +56,7 @@ export default function Dashboard() {
   const handleLeave = async (eventId) => {
     try {
       setActionLoading((p) => ({ ...p, [eventId]: true }));
-      await api.post(`/rsvp/${eventId}/leave`, {}, { headers: { Authorization: `Bearer ${token}` } });
+      await api.post(`/api/rsvp/${eventId}/leave`, {}, { headers: { Authorization: `Bearer ${token}` } });
       setEventStatus((p) => ({ ...p, [eventId]: { type: "success", text: "Left" } }));
       await fetchEvents();
     } catch {
@@ -70,7 +70,7 @@ export default function Dashboard() {
   const handleDelete = async (eventId) => {
     if (!window.confirm("Delete this event?")) return;
     try {
-      await api.delete(`/events/${eventId}`, { headers: { Authorization: `Bearer ${token}` } });
+      await api.delete(`/api/events/${eventId}`, { headers: { Authorization: `Bearer ${token}` } });
       setEvents((p) => p.filter((e) => e._id !== eventId));
     } catch (err) {
       console.error("DELETE ERROR:", err);
