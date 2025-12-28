@@ -11,9 +11,26 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: [
-    "https://event-platform-kappa-tan.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or Postman)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      "https://event-platform-kappa-tan.vercel.app",
+      // Add more production URLs here if needed
+    ];
+    
+    // Check if origin is in allowed list or is a Vercel preview deployment
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.includes("vercel.app")
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
