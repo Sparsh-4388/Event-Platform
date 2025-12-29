@@ -7,23 +7,26 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const trimmedEmail = email.trim().toLowerCase();
-    
-    // Check if email ends with @gmail.com or @test.com
-    if (!trimmedEmail.endsWith("@gmail.com") && !trimmedEmail.endsWith("@test.com")) {
+
+    if (
+      !trimmedEmail.endsWith("@gmail.com") &&
+      !trimmedEmail.endsWith("@test.com")
+    ) {
       return "Only @gmail.com (users) or @test.com (admins) emails are allowed";
     }
-    
-    // Basic email format validation
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
       return "Please enter a valid email address";
     }
-    
+
     return null;
   };
 
@@ -31,7 +34,6 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    // Validate email domain
     const emailError = validateEmail(email);
     if (emailError) {
       setError(emailError);
@@ -39,6 +41,7 @@ export default function Login() {
     }
 
     try {
+      setLoading(true);
       const res = await api.post("/api/auth/login", {
         email: email.trim().toLowerCase(),
         password,
@@ -47,9 +50,13 @@ export default function Login() {
       login(res.data);
       navigate("/dashboard");
     } catch (err) {
-      console.error("LOGIN ERROR FULL:", err);
       console.error("LOGIN ERROR:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
+    } finally {
+      setLoading(false); // 🔹 END loading
     }
   };
 
@@ -66,7 +73,7 @@ export default function Login() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setError(""); // Clear error when user types
+              setError("");
             }}
             required
           />
@@ -77,12 +84,19 @@ export default function Login() {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              setError(""); // Clear error when user types
+              setError("");
             }}
             required
           />
 
-          <button type="submit" className="btn-primary">Login</button>
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
           <div className="auth-link">
             Don't have an account? <a href="/signup">Signup</a>
           </div>
