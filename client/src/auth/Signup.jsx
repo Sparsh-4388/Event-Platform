@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import "../App.css";
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError(""); // Clear error when user types
+    setError("");
   };
 
   const validateEmail = (email) => {
     const trimmedEmail = email.trim().toLowerCase();
     
-    // Check if email ends with @gmail.com or @test.com
     if (!trimmedEmail.endsWith("@gmail.com") && !trimmedEmail.endsWith("@test.com")) {
       return "Only @gmail.com (users) or @test.com (admins) emails are allowed";
     }
     
-    // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
       return "Please enter a valid email address";
@@ -45,7 +45,6 @@ export default function Signup() {
     e.preventDefault();
     setError("");
 
-    // Validate required fields
     if (!form.name.trim()) {
       setError("Name is required");
       return;
@@ -66,7 +65,6 @@ export default function Signup() {
       return;
     }
 
-    // Validate email domain
     const emailError = validateEmail(form.email);
     if (emailError) {
       setError(emailError);
@@ -74,6 +72,7 @@ export default function Signup() {
     }
 
     try {
+      setLoading(true);
       const role = determineRole(form.email);
       
       await api.post("/api/auth/signup", {
@@ -86,6 +85,8 @@ export default function Signup() {
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,17 +100,21 @@ export default function Signup() {
           
           <input 
             name="name" 
+            type="text"
             placeholder="Name" 
             value={form.name}
             onChange={handleChange}
+            autoComplete="name"
             required
           />
           
           <input 
-            name="email" 
-            placeholder="Email" 
+            name="email"
+            type="email" 
+            placeholder="Email (@gmail.com or @test.com)" 
             value={form.email}
             onChange={handleChange}
+            autoComplete="email"
             required
           />
           
@@ -119,18 +124,25 @@ export default function Signup() {
             placeholder="Password (min 6 characters)" 
             value={form.password}
             onChange={handleChange}
+            autoComplete="new-password"
             required
           />
           
-          <button type="submit" className="btn-primary">Signup</button>
+          <button 
+            type="submit" 
+            className="btn-primary"
+            disabled={loading}
+          >
+            {loading ? "Creating account..." : "Signup"}
+          </button>
 
           <div className="auth-link">
-            Already have an account? <a href="/login">Login</a>
+            Already have an account? <Link to="/login">Login</Link>
           </div>
           
-          <div className="auth-link" style={{ fontSize: "0.75rem", marginTop: "0.5rem" }}>
+          <div className="auth-link" style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.8 }}>
             Want an admin account?<br />
-            Contact Me: sparshp773@gmail.com
+            Contact: sparshp773@gmail.com
           </div>
         </form>
       </div>

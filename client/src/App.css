@@ -119,11 +119,13 @@ body {
   align-items: center;
   justify-content: center;
   background: linear-gradient(90deg, rgba(9, 9, 121, 1) 29%, rgba(8, 165, 196, 1) 100%);
+  padding: 1rem;
 }
 
 /* ----- Glass Card ----- */
 .glass-card form {
-  width: 360px;
+  width: 100%;
+  max-width: 420px;
   padding: 2.5rem;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px);
@@ -1121,6 +1123,25 @@ body {
 
 /* ----- Mobile & Tablet (max-width: 768px) ----- */
 @media (max-width: 768px) {
+  /* Auth page - tablet adjustments */
+  .auth-page {
+    padding: 1.5rem 1rem;
+  }
+  
+  .glass-card form {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+  
+  .glass-card h2 {
+    font-size: 1.5rem;
+  }
+  
+  .glass-card input {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
   /* Hero adjustments */
   .hero h1 {
     font-size: 2rem;
@@ -1318,20 +1339,71 @@ body {
   }
   
   /* Auth page - better mobile fit */
+  .auth-page {
+    padding: 1rem 0.75rem;
+  }
+  
   .glass-card form {
     width: 100%;
-    max-width: 360px;
-    padding: 2rem;
-    margin: 0 1rem;
+    max-width: 100%;
+    padding: 1.75rem 1.25rem;
+    margin: 0;
+    border-radius: 12px;
   }
   
   .glass-card h2 {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
+  }
+  
+  .glass-card input {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  .glass-card .btn-primary {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .auth-link {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
   }
 }
 
 /* ----- Extra Small Mobile (max-width: 375px) ----- */
 @media (max-width: 375px) {
+  /* Auth page - extra small screens */
+  .auth-page {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .glass-card form {
+    padding: 1.5rem 1rem;
+    border-radius: 10px;
+    gap: 0.85rem;
+  }
+  
+  .glass-card h2 {
+    font-size: 1.25rem;
+  }
+  
+  .glass-card input {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .glass-card .btn-primary {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .auth-link {
+    font-size: 0.75rem;
+  }
+  
+  /* Dashboard adjustments */
   .sidebar {
     width: 260px;
   }

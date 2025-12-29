@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -56,7 +57,7 @@ export default function Login() {
           "Login failed. Please check your credentials."
       );
     } finally {
-      setLoading(false); // 🔹 END loading
+      setLoading(false);
     }
   };
 
@@ -69,12 +70,14 @@ export default function Login() {
           {error && <div className="error-text">{error}</div>}
 
           <input
+            type="email"
             placeholder="Email (@gmail.com or @test.com)"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
               setError("");
             }}
+            autoComplete="email"
             required
           />
 
@@ -86,6 +89,7 @@ export default function Login() {
               setPassword(e.target.value);
               setError("");
             }}
+            autoComplete="current-password"
             required
           />
 
@@ -98,7 +102,7 @@ export default function Login() {
           </button>
 
           <div className="auth-link">
-            Don't have an account? <a href="/signup">Signup</a>
+            Don't have an account? <Link to="/signup">Signup</Link>
           </div>
         </form>
       </div>
