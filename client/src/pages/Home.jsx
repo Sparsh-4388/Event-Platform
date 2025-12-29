@@ -17,7 +17,7 @@ export default function Home() {
 
     // Only add mouse move effect on desktop
     const handleMouseMove = (e) => {
-      if (window.innerWidth <= 768) return; // Skip on mobile
+      if (window.innerWidth <= 768) return;
       
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
