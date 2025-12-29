@@ -38,7 +38,7 @@ export default function Signup() {
       return "user";
     }
     
-    return "user"; // Default fallback
+    return "user";
   };
 
   const handleSubmit = async (e) => {
@@ -61,7 +61,7 @@ export default function Signup() {
       return;
     }
 
-    if (form.password.length < 4) {
+    if (form.password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
     }
