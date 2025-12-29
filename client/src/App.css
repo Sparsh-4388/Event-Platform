@@ -261,6 +261,58 @@ body {
   color: #6366f1;
 }
 
+/* ----- Mobile Header (Dashboard) ----- */
+.mobile-header {
+  display: none;
+  background-color: #020617;
+  border-bottom: 1px solid #1e293b;
+  padding: 1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.mobile-logo {
+  color: #6366f1;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1001;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #e5e7eb;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.hamburger-btn:hover span {
+  background-color: #6366f1;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
 /* ----- Sidebar (Dashboard) ----- */
 .sidebar {
   width: 240px;
@@ -276,6 +328,7 @@ body {
   height: 100vh;
   overflow-y: auto;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
 .sidebar-logo {
@@ -778,6 +831,28 @@ body {
   color: #6b7280;
 }
 
+.attendee-info {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+}
+
+.dashboard-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+}
+
+.dashboard-empty h3 {
+  margin-bottom: 1rem;
+  color: #e5e7eb;
+}
+
+.dashboard-empty p {
+  margin-bottom: 1.5rem;
+  color: #9ca3af;
+}
+
 /* ----- Event Actions & Status ----- */
 .event-actions {
   display: flex;
@@ -914,15 +989,21 @@ body {
   font-size: 0.85rem;
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
-.btn:disabled {
-  opacity: 0.6;
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn-primary {
@@ -941,6 +1022,11 @@ body {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
+}
+
+.btn-success:disabled,
+.btn-success.disabled {
+  background-color: #81c784;
 }
 
 .btn-warning {
@@ -969,6 +1055,11 @@ body {
   text-decoration: none;
   border: none;
   border-radius: 5px;
+}
+
+.btn-logout {
+  width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 /* ----- Loader/Spinner ----- */
@@ -1017,6 +1108,17 @@ body {
    7. RESPONSIVE DESIGN
 ============================================================================ */
 
+/* ----- Tablet (max-width: 1024px) ----- */
+@media (max-width: 1024px) {
+  .stats-row {
+    flex-wrap: wrap;
+  }
+  
+  .stat-card {
+    min-width: calc(50% - 0.5rem);
+  }
+}
+
 /* ----- Mobile & Tablet (max-width: 768px) ----- */
 @media (max-width: 768px) {
   /* Hero adjustments */
@@ -1024,11 +1126,29 @@ body {
     font-size: 2rem;
   }
   
+  .hero p {
+    font-size: 0.95rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .hero-actions .btn-primary {
+    width: 100%;
+  }
+  
   .floating-feature {
     display: none;
   }
   
-  /* Dashboard layout adjustments */
+  /* Dashboard Layout - Mobile Menu */
+  .mobile-header {
+    display: flex;
+  }
+  
   .dashboard-layout {
     flex-direction: column;
     max-height: none;
@@ -1036,21 +1156,117 @@ body {
   }
   
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    border-right: none;
-    border-bottom: 1px solid #1e293b;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    transform: translateX(-100%);
+    z-index: 1000;
+    border-right: 1px solid #1e293b;
+    border-bottom: none;
+  }
+  
+  .sidebar-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: block;
+  }
+  
+  .sidebar-logo {
+    display: block;
   }
   
   .dashboard-main {
     max-height: none;
     overflow-y: visible;
+    padding: 1.5rem 1rem;
+  }
+  
+  /* Stats Row - Stack on mobile */
+  .stats-row {
+    flex-direction: column;
+  }
+  
+  .stat-card {
+    width: 100%;
+  }
+  
+  /* Create Event Form - Mobile friendly */
+  .create-event {
+    padding: 1rem;
+  }
+  
+  .create-event-card {
+    padding: 1.5rem;
+  }
+  
+  .create-event-card h2 {
+    font-size: 1.3rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions .btn,
+  .form-actions button {
+    width: 100%;
+  }
+  
+  /* Event Actions - Better spacing on mobile */
+  .event-actions {
+    flex-wrap: wrap;
+  }
+  
+  .event-actions button {
+    flex: 1;
+    min-width: calc(50% - 0.25rem);
+  }
+  
+  /* Grid layout adjustments */
+  .grid-layout {
+    gap: 0.75rem;
+  }
+  
+  .grid-box {
+    padding: 1rem;
+  }
+  
+  .attendee-info {
+    font-size: 0.8rem;
   }
 }
 
 /* ----- Small Mobile (max-width: 640px) ----- */
 @media (max-width: 640px) {
+  /* Navbar adjustments */
+  .navbar {
+    padding: 0.7rem 1rem;
+  }
+  
+  .nav-logo-text {
+    font-size: 1.2rem;
+  }
+  
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .nav-actions {
+    gap: 0.5rem;
+  }
+  
+  .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Footer adjustments */
   .footer-simple {
     padding: 2rem 1.5rem 1.5rem;
   }
@@ -1061,5 +1277,75 @@ body {
   
   .footer-credit {
     font-size: 0.9rem;
+  }
+  
+  /* Dashboard adjustments */
+  .dashboard {
+    padding: 0.5rem;
+  }
+  
+  .dashboard-main {
+    padding: 1rem 0.5rem;
+  }
+  
+  /* Create event form - extra small screens */
+  .create-event-form input,
+  .create-event-form textarea {
+    font-size: 0.9rem;
+    padding: 0.65rem 0.75rem;
+  }
+  
+  /* Event cards - compact on small screens */
+  .grid-box h3 {
+    font-size: 1.1rem;
+  }
+  
+  .grid-content {
+    font-size: 0.9rem;
+  }
+  
+  .location-info {
+    font-size: 0.8rem;
+  }
+  
+  /* Stat cards - smaller text */
+  .stat-card h3 {
+    font-size: 1.6rem;
+  }
+  
+  .stat-card p {
+    font-size: 0.85rem;
+  }
+  
+  /* Auth page - better mobile fit */
+  .glass-card form {
+    width: 100%;
+    max-width: 360px;
+    padding: 2rem;
+    margin: 0 1rem;
+  }
+  
+  .glass-card h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* ----- Extra Small Mobile (max-width: 375px) ----- */
+@media (max-width: 375px) {
+  .sidebar {
+    width: 260px;
+  }
+  
+  .create-event-card {
+    padding: 1.2rem;
+  }
+  
+  .event-actions button {
+    min-width: 100%;
+    font-size: 0.8rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
   }
 }
