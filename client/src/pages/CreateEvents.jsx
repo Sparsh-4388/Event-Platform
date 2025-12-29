@@ -34,7 +34,7 @@ export default function CreateEvent() {
 
     try {
       await api.post(
-        "/events",
+        "/api/events",
         { ...form, capacity: Number(form.capacity) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
